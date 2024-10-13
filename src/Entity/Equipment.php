@@ -37,6 +37,10 @@ class Equipment
     #[ORM\JoinColumn(nullable: false)]
     private ?Location $location = null;
 
+    #[ORM\ManyToOne(inversedBy: 'equipment')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Condition $stat = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,6 +126,18 @@ class Equipment
     public function setLocation(?Location $location): static
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    public function getStat(): ?Condition
+    {
+        return $this->stat;
+    }
+
+    public function setStat(?Condition $stat): static
+    {
+        $this->stat = $stat;
 
         return $this;
     }
