@@ -29,6 +29,10 @@ class Equipment
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastMovement = null;
 
+    #[ORM\ManyToOne(inversedBy: 'equipment')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +94,18 @@ class Equipment
     public function setLastMovement(?\DateTimeInterface $lastMovement): static
     {
         $this->lastMovement = $lastMovement;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }
