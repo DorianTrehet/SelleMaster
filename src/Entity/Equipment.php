@@ -55,10 +55,17 @@ class Equipment
     #[ORM\OneToMany(targetEntity: Movement::class, mappedBy: 'equipment')]
     private Collection $movements;
 
+    /**
+     * @var Collection<int, Repair>
+     */
+    #[ORM\OneToMany(targetEntity: Repair::class, mappedBy: 'equipment')]
+    private Collection $repairs;
+
     public function __construct()
     {
         $this->histories = new ArrayCollection();
         $this->movements = new ArrayCollection();
+        $this->repairs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -216,6 +223,36 @@ class Equipment
             // set the owning side to null (unless already changed)
             if ($movement->getEquipment() === $this) {
                 $movement->setEquipment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Repair>
+     */
+    public function getRepairs(): Collection
+    {
+        return $this->repairs;
+    }
+
+    public function addRepair(Repair $repair): static
+    {
+        if (!$this->repairs->contains($repair)) {
+            $this->repairs->add($repair);
+            $repair->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRepair(Repair $repair): static
+    {
+        if ($this->repairs->removeElement($repair)) {
+            // set the owning side to null (unless already changed)
+            if ($repair->getEquipment() === $this) {
+                $repair->setEquipment(null);
             }
         }
 
