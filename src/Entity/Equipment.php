@@ -61,11 +61,18 @@ class Equipment
     #[ORM\OneToMany(targetEntity: Repair::class, mappedBy: 'equipment')]
     private Collection $repairs;
 
+    /**
+     * @var Collection<int, Maintenance>
+     */
+    #[ORM\OneToMany(targetEntity: Maintenance::class, mappedBy: 'equipment')]
+    private Collection $maintenances;
+
     public function __construct()
     {
         $this->histories = new ArrayCollection();
         $this->movements = new ArrayCollection();
         $this->repairs = new ArrayCollection();
+        $this->maintenances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -253,6 +260,36 @@ class Equipment
             // set the owning side to null (unless already changed)
             if ($repair->getEquipment() === $this) {
                 $repair->setEquipment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Maintenance>
+     */
+    public function getMaintenances(): Collection
+    {
+        return $this->maintenances;
+    }
+
+    public function addMaintenance(Maintenance $maintenance): static
+    {
+        if (!$this->maintenances->contains($maintenance)) {
+            $this->maintenances->add($maintenance);
+            $maintenance->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMaintenance(Maintenance $maintenance): static
+    {
+        if ($this->maintenances->removeElement($maintenance)) {
+            // set the owning side to null (unless already changed)
+            if ($maintenance->getEquipment() === $this) {
+                $maintenance->setEquipment(null);
             }
         }
 
