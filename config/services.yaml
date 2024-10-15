@@ -45,5 +45,17 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: "Inventory", label: "MovementType" }
 
+    # Admin class for MaintenanceType entity
+    App\Admin\MaintenanceTypeAdmin:
+        arguments: [~, App\Entity\MaintenanceType, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Inventory", label: "MaintenanceType" }
+
+    # Admin class for Repair entity
+    App\Admin\RepairAdmin:
+        arguments: [~, App\Entity\Repair, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Inventory", label: "Repair" }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
