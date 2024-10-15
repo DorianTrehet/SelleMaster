@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\RepairRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\RepairRepository;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RepairRepository::class)]
 class Repair
@@ -93,5 +95,15 @@ class Repair
         $this->description = $description;
 
         return $this;
+    }
+
+    #[Assert\Callback]
+    public function validateDates(ExecutionContextInterface $context): void
+    {
+        if ($this->startDate && $this->endDate && $this->startDate > $this->endDate) {
+            $context->buildViolation('The start date must be before the end date.')
+                ->atPath('endDate')
+                ->addViolation();
+        }
     }
 }
