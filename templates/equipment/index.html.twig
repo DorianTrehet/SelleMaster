@@ -3,7 +3,8 @@
 {% block title %}Hello EquipmentController!{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
@@ -13,30 +14,32 @@
         <a href="{{ path('app_logout') }}">Déconnexion</a>
     {% endif %} #}
     
-    <h1>Liste des équipements</h1>
+    <h1 class="text-2xl font-bold mb-4">Liste des équipements</h1>
     {# <a href="{{ path('app_equipment_create') }}" class="btn btn-primary">Ajouter un équipement</a> #}
-    <div class="container">
-        <table class="table table-striped table-bordered" id="myTable">
+    <div class="container mx-auto">
+        <table class="min-w-full bg-white border border-gray-200" id="myTable">
             <thead>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Last Movement</th>
-                {# <th>Actions</th> #}
+                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                    <th class="py-3 px-6 text-left">ID</th>
+                    <th class="py-3 px-6 text-left">Nom</th>
+                    <th class="py-3 px-6 text-left">Catégorie</th>
+                    <th class="py-3 px-6 text-left">Prix</th>
+                    <th class="py-3 px-6 text-left">Dernier Mouvement</th>
+                    {# <th class="py-3 px-6 text-left">Actions</th> #}
+                </tr>
             </thead>
-            <tbody>
+            <tbody class="text-gray-600 text-sm font-light">
             {% for equipment in equipments %}
-                <tr>
-                    <td>{{ equipment.id }}</td>
-                    <td>{{ equipment.name }}</td>
-                    <td>{{ equipment.category.name }}</td>
-                    <td>{{ equipment.price|number_format(2, '.', ',') }}</td>
-                    <td>{{ equipment.lastMovement|date('d/m/Y H:i') }}</td>
-                    <td>
-                        {# <a href="{{ path('app_equipment_update', { 'id': equipment.id }) }}" class="btn btn-success">Modifier</a>
-                        <a href="{{ path('app_equipment_delete', { 'id': equipment.id }) }}" class="btn btn-warning">Supprimer</a> #}
-                    </td>
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-6">{{ equipment.id }}</td>
+                    <td class="py-3 px-6">{{ equipment.name }}</td>
+                    <td class="py-3 px-6">{{ equipment.category.name }}</td>
+                    <td class="py-3 px-6">{{ equipment.price|number_format(2, '.', ',') }}</td>
+                    <td class="py-3 px-6">{{ equipment.lastMovement|date('d/m/Y H:i') }}</td>
+                    {# <td class="py-3 px-6">
+                        <a href="{{ path('app_equipment_update', { 'id': equipment.id }) }}" class="text-green-600 hover:text-green-800">Modifier</a>
+                        <a href="{{ path('app_equipment_delete', { 'id': equipment.id }) }}" class="text-yellow-600 hover:text-yellow-800">Supprimer</a>
+                    </td> #}
                 </tr>
             {% endfor %}
             </tbody>
@@ -46,8 +49,10 @@
 
 {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script>
-        let table = new DataTable('#myTable');
+        $(document).ready(function() {
+    $('#myTable').DataTable();
+});
     </script>
 {% endblock %}
