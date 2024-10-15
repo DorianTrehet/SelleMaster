@@ -31,6 +31,7 @@ final class CategoryAdmin extends AbstractAdmin
 
     protected function configureShowFields(ShowMapper $show): void
     {
-        $show->add('name');
+        $show->add('id')
+             ->add('name');
     }
 }

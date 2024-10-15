@@ -17,53 +17,58 @@ final class UserAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $form): void
     {
-        $form->add('email', EmailType::class, [
+        $form
+        ->add('email', EmailType::class, [
                 'required' => true,
             ])
-            ->add('password', PasswordType::class, [
-                'required' => true,
-            ])
-            ->add('roles', ChoiceType::class, [
-                'choices' => [
-                    'User' => 'ROLE_USER',
-                    'Admin' => 'ROLE_ADMIN',
-                ],
-                'multiple' => true,
-                'expanded' => true,
-            ]);
+        ->add('password', PasswordType::class, [
+            'required' => true,
+        ])
+        ->add('roles', ChoiceType::class, [
+            'choices' => [
+                'User' => 'ROLE_USER',
+                'Admin' => 'ROLE_ADMIN',
+            ],
+            'multiple' => true,
+            'expanded' => true,
+        ]);
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagrid): void
     {
-        $datagrid->add('email')
-            ->add('isVerified');
+        $datagrid
+        ->add('email')
+        ->add('isVerified');
     }
 
     protected function configureListFields(ListMapper $list): void
     {
-        $list->addIdentifier('email')
-            ->add('roles', null, [
-                'label' => 'Roles',
-                'associated_property' => function (User $user) {
-                    return implode(', ', $user->getRoles());
-                },
-            ])
-            ->add('isVerified', 'boolean', [
-                'label' => 'Verified',
-            ]);
+        $list
+        ->addIdentifier('email')
+        ->add('roles', null, [
+            'label' => 'Roles',
+            'associated_property' => function (User $user) {
+                return implode(', ', $user->getRoles());
+            },
+        ])
+        ->add('isVerified', 'boolean', [
+            'label' => 'Verified',
+        ]);
     }
 
     protected function configureShowFields(ShowMapper $show): void
     {
-        $show->add('email')
-            ->add('roles', null, [
-                'label' => 'Roles',
-                'associated_property' => function (User $user) {
-                    return implode(', ', $user->getRoles());
-                },
-            ])
-            ->add('isVerified', null, [
-                'label' => 'Verified',
-            ]);
+        $show
+        ->add('id')
+        ->add('email')
+        ->add('roles', null, [
+            'label' => 'Roles',
+            'associated_property' => function (User $user) {
+                return implode(', ', $user->getRoles());
+            },
+        ])
+        ->add('isVerified', null, [
+            'label' => 'Verified',
+        ]);
     }
 }

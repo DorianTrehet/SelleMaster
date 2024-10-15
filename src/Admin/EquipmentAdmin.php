@@ -32,110 +32,108 @@ final class EquipmentAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $form): void
     {
-        $form->add('name', TextType::class)
-            ->add('description', TextareaType::class, [
-                'required' => false,
-            ])
-            ->add('price', NumberType::class, [
-                'scale' => 2,
-            ])
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
-            ])
-            ->add('stat', EntityType::class, [
-                'class' => Condition::class,
-                'choice_label' => 'name',
-            ])
-            ->add('location', EntityType::class, [
-                'class' => Location::class,
-                'choice_label' => function (Location $location) {
-                    return sprintf('%s - %s', $location->getAisle(), $location->getShelf());
-                },
-            ])
-            ->add('lastMovement', DateTimeType::class, [
-                'widget' => 'single_text',
-                'required' => false,
-            ])
-            ->add('createdAt', DateTimeType::class, [
-                'widget' => 'single_text',
-                'disabled' => true,
-            ]);
+        $form
+        ->add('name', TextType::class)
+        ->add('description', TextareaType::class, [
+            'required' => false,
+        ])
+        ->add('price', NumberType::class, [
+            'scale' => 2,
+        ])
+        ->add('category', EntityType::class, [
+            'class' => Category::class,
+            'choice_label' => 'name',
+        ])
+        ->add('stat', EntityType::class, [
+            'class' => Condition::class,
+            'choice_label' => 'name',
+        ])
+        ->add('location', EntityType::class, [
+            'class' => Location::class,
+            'choice_label' => function (Location $location) {
+                return sprintf('%s - %s', $location->getAisle(), $location->getShelf());
+            },
+        ])
+        ->add('lastMovement', DateTimeType::class, [
+            'widget' => 'single_text',
+            'required' => false,
+        ])
+        ->add('createdAt', DateTimeType::class, [
+            'widget' => 'single_text',
+            'disabled' => true,
+        ]);
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagrid): void
     {
-        $datagrid->add('name')
-                ->add('category', null, [
-                    'field_type' => EntityType::class,
-                    'field_options' => [
-                        'class' => Category::class,
-                        'choice_label' => 'name',
-                    ],
-                ])
-                ->add('stat', null, [
-                    'field_type' => EntityType::class,
-                    'field_options' => [
-                        'class' => Condition::class,
-                        'choice_label' => 'name',
-                    ],
-                ]);
+        $datagrid
+        ->add('name')
+        ->add('category', null, [
+            'field_type' => EntityType::class,
+            'field_options' => [
+                'class' => Category::class,
+                'choice_label' => 'name',
+            ],
+        ])
+        ->add('stat', null, [
+            'field_type' => EntityType::class,
+            'field_options' => [
+                'class' => Condition::class,
+                'choice_label' => 'name',
+            ],
+        ]);
     }
 
     protected function configureListFields(ListMapper $list): void
     {
-        $list->addIdentifier('name')
-            ->add('category.name', 'text', [
-                'label' => 'Category',
-            ])
-            ->add('stat.name', 'text', [
-                'label' => 'State',
-            ])
-            ->add('location.aisle', 'text', [
-                'label' => 'Aisle',
-            ])
-            ->add('location.shelf', 'text', [
-                'label' => 'Shelf',
-            ])
-            ->add('description', 'text', [ 
-                'label' => 'Description',
-                'sortable' => false,
-            ])
-            ->add('price')
-            ->add('lastMovement')
-            ->add('createdAt', 'date', [
-                'pattern' => 'dd MMM y G',
-                'locale' => 'fr',
-                'timezone' => 'Europe/Paris',
-            ]);
+        $list
+        ->addIdentifier('name')
+        ->add('category.name', 'text', [
+            'label' => 'Category',
+        ])
+        ->add('stat.name', 'text', [
+            'label' => 'State',
+        ])
+        ->add('location.aisle', 'text', [
+            'label' => 'Aisle',
+        ])
+        ->add('location.shelf', 'text', [
+            'label' => 'Shelf',
+        ])
+        // ->add('description', 'text', [ 
+        //     'label' => 'Description',
+        //     'sortable' => false,
+        // ])
+        ->add('price')
+        ->add('lastMovement');
+        // ->add('createdAt', 'date', [
+        //     'pattern' => 'dd MMM y G',
+        //     'locale' => 'fr',
+        //     'timezone' => 'Europe/Paris',
+        // ]);
     }
 
     protected function configureShowFields(ShowMapper $show): void
     {
-        $show->add('name')
-            ->add('category.name', null, [
-                'label' => 'Category',
-            ])
-            ->add('stat.name', null, [
-                'label' => 'State',
-            ])
-            ->add('location.aisle', 'text', [
-                'label' => 'Aisle',
-            ])
-            ->add('location.shelf', 'text', [
-                'label' => 'Shelf',
-            ])
-            ->add('description', 'text', [
-                'label' => 'Description',
-                'sortable' => false,
-            ])
-            ->add('price')
-            ->add('lastMovement')
-            ->add('createdAt', 'date', [
-                'pattern' => 'dd MMM y G',
-                'locale' => 'fr',
-                'timezone' => 'Europe/Paris',
-            ]);
+        $show
+        ->add('id')
+        ->add('name')
+        ->add('category.name', null, [
+            'label' => 'Category',
+        ])
+        ->add('stat.name', null, [
+            'label' => 'State',
+        ])
+        ->add('location.aisle', 'text', [
+            'label' => 'Aisle',
+        ])
+        ->add('location.shelf', 'text', [
+            'label' => 'Shelf',
+        ])
+        ->add('description')
+        ->add('price')
+        ->add('lastMovement')
+        ->add('createdAt');
     }
 
 }

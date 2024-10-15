@@ -31,6 +31,8 @@ final class MovementTypeAdmin extends AbstractAdmin
 
     protected function configureShowFields(ShowMapper $show): void
     {
-        $show->add('name');
+        $show
+        ->add('id')
+        ->add('name');
     }
 }
