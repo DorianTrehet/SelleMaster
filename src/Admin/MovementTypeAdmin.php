@@ -1,6 +1,6 @@
 <?php
 
-// src/Admin/CategoryAdmin.php
+// src/Admin/MovementTypeAdmin.php
 namespace App\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
@@ -10,7 +10,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-final class CategoryAdmin extends AbstractAdmin
+final class MovementTypeAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $form): void
     {
