@@ -25,5 +25,10 @@ services:
         arguments: [~, App\Entity\Equipment, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, group: "Inventory", label: "Equipment" }
+    # Admin class for User entity
+    App\Admin\UserAdmin:
+        arguments: [~, App\Entity\User, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Inventory", label: "User" }
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
