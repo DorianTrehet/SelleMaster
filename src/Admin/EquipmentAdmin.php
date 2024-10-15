@@ -26,7 +26,7 @@ final class EquipmentAdmin extends AbstractAdmin
                 'required' => false,
             ])
             ->add('price', NumberType::class, [
-                'scale' => 2, // nombre de décimales
+                'scale' => 2,
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
@@ -36,12 +36,11 @@ final class EquipmentAdmin extends AbstractAdmin
                 'class' => Condition::class,
                 'choice_label' => 'name',
             ])
-            // Ajouter des champs pour saisir manuellement l'aisle et le shelf
             ->add('location.aisle', TextType::class, [
-                'label' => 'Aisle', // Label pour le champ Aisle
+                'label' => 'Aisle',
             ])
             ->add('location.shelf', TextType::class, [
-                'label' => 'Shelf', // Label pour le champ Shelf
+                'label' => 'Shelf',
             ])
             ->add('lastMovement', DateTimeType::class, [
                 'widget' => 'single_text',
@@ -87,9 +86,9 @@ final class EquipmentAdmin extends AbstractAdmin
             ->add('location.shelf', 'text', [
                 'label' => 'Shelf',
             ])
-            ->add('description', 'text', [ // Pas de tri sur cette colonne
+            ->add('description', 'text', [ 
                 'label' => 'Description',
-                'sortable' => false, // Désactiver le tri
+                'sortable' => false,
             ])
             ->add('price')
             ->add('lastMovement')
@@ -115,9 +114,9 @@ final class EquipmentAdmin extends AbstractAdmin
             ->add('location.shelf', 'text', [
                 'label' => 'Shelf',
             ])
-            ->add('description', 'text', [ // Pas de tri sur cette colonne
+            ->add('description', 'text', [
                 'label' => 'Description',
-                'sortable' => false, // Désactiver le tri
+                'sortable' => false,
             ])
             ->add('price')
             ->add('lastMovement')
