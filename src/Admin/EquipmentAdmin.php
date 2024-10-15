@@ -19,6 +19,17 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 final class EquipmentAdmin extends AbstractAdmin
 {
+
+    protected function prePersist($equipment): void
+    {
+        $equipment->setCreatedAt(new \DateTimeImmutable());
+    }
+
+    protected function preUpdate($equipment): void
+    {
+        $equipment->setLastMovement(new \DateTimeImmutable());
+    }
+
     protected function configureFormFields(FormMapper $form): void
     {
         $form->add('name', TextType::class)
@@ -36,11 +47,11 @@ final class EquipmentAdmin extends AbstractAdmin
                 'class' => Condition::class,
                 'choice_label' => 'name',
             ])
-            ->add('location.aisle', TextType::class, [
-                'label' => 'Aisle',
-            ])
-            ->add('location.shelf', TextType::class, [
-                'label' => 'Shelf',
+            ->add('location', EntityType::class, [
+                'class' => Location::class,
+                'choice_label' => function (Location $location) {
+                    return sprintf('%s - %s', $location->getAisle(), $location->getShelf());
+                },
             ])
             ->add('lastMovement', DateTimeType::class, [
                 'widget' => 'single_text',
