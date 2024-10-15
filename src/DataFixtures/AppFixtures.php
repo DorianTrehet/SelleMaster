@@ -109,23 +109,27 @@ class AppFixtures extends Fixture
 
         for ($u=0; $u < 50; $u++) { 
             $user = new User();
-
-            //Hasher le password de l'user
-            //config/packages/security.yaml
-            $hash = $this->hasher->hashPassword($user, 'password');
-            if($u === 3)
-            {
+        
+            // Définir le mot de passe de l'admin
+            if ($u === 3) {
+                $adminPassword = 'password'; // Définit le mot de passe ici
                 $user->setRoles(["ROLE_ADMIN"])
                      ->setEmail("admin@test.test");
-            }
-            else {
+                echo "Mot de passe de l'admin: " . $adminPassword . "\n"; // Affiche le mot de passe
+            } else {
                 $user->setEmail($faker->freeEmail());
+                $adminPassword = 'password'; // Utiliser un mot de passe par défaut pour les autres utilisateurs si nécessaire
             }
-            $this->addReference('user_' . $u, $user);
+        
+            // Hasher le mot de passe de l'utilisateur
+            $hash = $this->hasher->hashPassword($user, $adminPassword);
+            
+            // Appliquer le mot de passe haché à l'utilisateur
             $user->setPassword($hash);
-
+            $this->addReference('user_' . $u, $user);
+        
             $manager->persist($user);
-        }
+        }        
 
         // Mouvements
         for ($i = 0; $i < 50; $i++) { // Générer 50 mouvements

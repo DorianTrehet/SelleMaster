@@ -20,15 +20,23 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+            
     # Admin class for Equipment entity
     App\Admin\EquipmentAdmin:
         arguments: [~, App\Entity\Equipment, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, group: "Inventory", label: "Equipment" }
+
     # Admin class for User entity
     App\Admin\UserAdmin:
         arguments: [~, App\Entity\User, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, group: "Inventory", label: "User" }
+            
+    # Admin class for Category entity
+    App\Admin\CategoryAdmin:
+        arguments: [~, App\Entity\Category, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Inventory", label: "Category" }
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
