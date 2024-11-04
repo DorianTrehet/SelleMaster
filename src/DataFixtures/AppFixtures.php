@@ -144,14 +144,27 @@ class AppFixtures extends Fixture
 
         // Réparations
         for ($i = 0; $i < 30; $i++) { // Générer 30 réparations
-            $repair = new Repair();
-            $repair->setEquipment($this->getReference('equipment_' . $faker->numberBetween(0, 19))) // Récupérer une référence d'équipement
-                ->setReportDate(new \DateTimeImmutable($faker->dateTimeThisYear()->format('Y-m-d H:i:s'))) // Date du rapport
-                ->setStartDate(new \DateTimeImmutable($faker->dateTimeBetween('-1 months', 'now')->format('Y-m-d H:i:s'))) // Date de début
-                ->setEndDate(new \DateTimeImmutable($faker->dateTimeBetween('now', '+1 months')->format('Y-m-d H:i:s'))) // Date de fin
-                ->setDescription($faker->sentence()); // Description de la réparation
+            // Récupérer uniquement les équipements qui sont en état "Under Repair"
+            $underRepairEquipments = [];
+            
+            // Parcourir tous les équipements pour trouver ceux qui sont "Under Repair"
+            for ($j = 0; $j < 20; $j++) {
+                $equipment = $this->getReference('equipment_' . $j);
+                if ($equipment->getStat()->getName() === 'Under Repair') {
+                    $underRepairEquipments[] = $equipment; 
+                }
+            }
 
-            $manager->persist($repair);
+            if (!empty($underRepairEquipments)) {
+                $repair = new Repair();
+                $repair->setEquipment($faker->randomElement($underRepairEquipments)) // Récupérer un équipement en état "Under Repair"
+                    ->setReportDate(new \DateTimeImmutable($faker->dateTimeThisYear()->format('Y-m-d H:i:s'))) // Date du rapport
+                    ->setStartDate(new \DateTimeImmutable($faker->dateTimeBetween('-1 months', 'now')->format('Y-m-d H:i:s'))) // Date de début
+                    ->setEndDate(new \DateTimeImmutable($faker->dateTimeBetween('now', '+1 months')->format('Y-m-d H:i:s'))) // Date de fin
+                    ->setDescription($faker->sentence()); // Description de la réparation
+
+                $manager->persist($repair);
+            }
         }
 
         // Historique
