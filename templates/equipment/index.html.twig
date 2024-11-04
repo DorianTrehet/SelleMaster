@@ -18,22 +18,18 @@
         <table class="min-w-full bg-white border border-gray-200" id="myTable">
             <thead>
                 <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                    <th class="py-3 px-6 text-left">ID</th>
                     <th class="py-3 px-6 text-left">Nom</th>
                     <th class="py-3 px-6 text-left">Catégorie</th>
                     <th class="py-3 px-6 text-left">Prix</th>
-                    <th class="py-3 px-6 text-left">Dernier Mouvement</th>
                     {# <th class="py-3 px-6 text-left">Actions</th> #}
                 </tr>
             </thead>
             <tbody class="text-gray-600 text-sm font-light">
             {% for equipment in equipments %}
                 <tr class="border-b border-gray-200 hover:bg-gray-100">
-                    <td class="py-3 px-6">{{ equipment.id }}</td>
                     <td class="py-3 px-6">{{ equipment.name }}</td>
                     <td class="py-3 px-6">{{ equipment.category.name }}</td>
                     <td class="py-3 px-6">{{ equipment.price|number_format(2, '.', ',') }}</td>
-                    <td class="py-3 px-6">{{ equipment.lastMovement|date('d/m/Y H:i') }}</td>
                     {# <td class="py-3 px-6">
                         <a href="{{ path('app_equipment_update', { 'id': equipment.id }) }}" class="text-green-600 hover:text-green-800">Modifier</a>
                         <a href="{{ path('app_equipment_delete', { 'id': equipment.id }) }}" class="text-yellow-600 hover:text-yellow-800">Supprimer</a>

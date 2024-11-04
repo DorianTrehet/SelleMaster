@@ -49,9 +49,11 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 
-            // do anything else you need here, like send an email
+            // Login the user
+            $security->login($user, 'form_login', 'main');
 
-            return $security->login($user, 'form_login', 'main');
+            // Redirect to the "equipment" page after registration
+            return $this->redirectToRoute('app_equipment');
         }
 
         return $this->render('registration/register.html.twig', [

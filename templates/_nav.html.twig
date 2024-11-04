@@ -16,10 +16,16 @@
         
         <!-- Boutons d'utilisateur (Connexion/Déconnexion) -->
         <div class="flex items-center space-x-4">
-            <a href="/login" class="text-gray-300 hover:text-white">Connexion</a>
-            <!-- Lien vers la déconnexion (affiché si l'utilisateur est connecté) -->
-            <!-- <a href="/logout" class="text-gray-300 hover:text-white">Déconnexion</a> -->
+            {% if app.user %}
+                <!-- Affiche le bouton de déconnexion si l'utilisateur est connecté -->
+                <a href="{{ path('app_logout') }}" class="text-gray-300 hover:text-white font-medium">Déconnexion</a>
+            {% else %}
+                <!-- Affiche les boutons de connexion et d'inscription si l'utilisateur n'est pas connecté -->
+                <a href="{{ path('app_login') }}" class="text-gray-300 hover:text-white font-medium">Connexion</a>
+                <a href="{{ path('app_register') }}" class="text-gray-300 hover:text-white font-medium">Inscription</a>
+            {% endif %}
         </div>
+
         
         <!-- Bouton mobile -->
         <div class="md:hidden">
