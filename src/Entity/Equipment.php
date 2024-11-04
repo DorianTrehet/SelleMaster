@@ -67,12 +67,19 @@ class Equipment
     #[ORM\OneToMany(targetEntity: Maintenance::class, mappedBy: 'equipment')]
     private Collection $maintenances;
 
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'equipment')]
+    private Collection $reservations;
+
     public function __construct()
     {
         $this->histories = new ArrayCollection();
         $this->movements = new ArrayCollection();
         $this->repairs = new ArrayCollection();
         $this->maintenances = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -316,6 +323,36 @@ class Equipment
     
         // L'équipement est disponible s'il n'y a pas de réparations, de maintenances actives, et s'il n'est pas en réparation ou hors service
         return !$hasActiveRepairs && !$hasActiveMaintenance && !$isUnderRepair && !$isOutOfService;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getEquipment() === $this) {
+                $reservation->setEquipment(null);
+            }
+        }
+
+        return $this;
     }
     
     
