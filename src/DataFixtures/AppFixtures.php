@@ -112,13 +112,12 @@ class AppFixtures extends Fixture
         
             // Définir le mot de passe de l'admin
             if ($u === 3) {
-                $adminPassword = 'password'; // Définit le mot de passe ici
+                $adminPassword = 'password';
                 $user->setRoles(["ROLE_ADMIN"])
                      ->setEmail("admin@test.test");
-                echo "Mot de passe de l'admin: " . $adminPassword . "\n"; // Affiche le mot de passe
             } else {
                 $user->setEmail($faker->freeEmail());
-                $adminPassword = 'password'; // Utiliser un mot de passe par défaut pour les autres utilisateurs si nécessaire
+                $adminPassword = 'password';
             }
         
             // Hasher le mot de passe de l'utilisateur

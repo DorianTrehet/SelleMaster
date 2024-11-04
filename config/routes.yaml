@@ -4,6 +4,12 @@ controllers:
         namespace: App\Controller
     type: attribute
 
+index:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: app_home
+
 admin_area:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
     prefix: /admin
