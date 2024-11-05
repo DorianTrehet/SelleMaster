@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReservationRepository;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -22,10 +24,10 @@ class Reservation
     #[ORM\JoinColumn(nullable: false)]
     private ?Equipment $equipment = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $startDate = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $endDate = null;
 
     public function getId(): ?int
@@ -79,5 +81,17 @@ class Reservation
         $this->endDate = $endDate;
 
         return $this;
+    }
+
+    #[Assert\Callback]
+    public function validateDates(ExecutionContextInterface $context): void
+    {
+        if ($this->startDate && $this->endDate) {
+            if ($this->startDate > $this->endDate) {
+                $context->buildViolation('The start date must be before the end date.')
+                    ->atPath('endDate')
+                    ->addViolation();
+            }
+        }
     }
 }

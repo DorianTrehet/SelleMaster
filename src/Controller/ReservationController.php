@@ -27,16 +27,26 @@ class ReservationController extends AbstractController
         $form = $this->createForm(ReservationType::class, $reservation);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($reservation);
-            $em->flush();
+        $errors = []; // Déclarez un tableau pour stocker les erreurs
 
-            return $this->redirectToRoute('user_reservations', ['id' => $equipment->getId()]);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em->persist($reservation);
+                $em->flush();
+
+                return $this->redirectToRoute('user_reservations', ['id' => $equipment->getId()]);
+            } else {
+                // Récupération des erreurs de validation
+                foreach ($form->getErrors(true) as $error) {
+                    $errors[] = $error->getMessage();
+                }
+            }
         }
 
         return $this->render('reservation/new.html.twig', [
             'form' => $form->createView(),
             'equipment' => $equipment,
+            'errors' => $errors, // Passer les erreurs à la vue
         ]);
     }
 
@@ -64,17 +74,27 @@ class ReservationController extends AbstractController
         
         // Traitement de la requête
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush(); // Enregistrer les modifications en base de données
-            
-            // Rediriger après la modification
-            return $this->redirectToRoute('user_reservations');
+        $errors = []; // Déclarez un tableau pour stocker les erreurs
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $entityManager->flush(); // Enregistrer les modifications en base de données
+                
+                // Rediriger après la modification
+                return $this->redirectToRoute('user_reservations');
+            } else {
+                // Récupération des erreurs de validation
+                foreach ($form->getErrors(true) as $error) {
+                    $errors[] = $error->getMessage();
+                }
+            }
         }
 
         // Passer la réservation au template
         return $this->render('reservation/edit.html.twig', [
             'form' => $form->createView(),
-            'reservation' => $reservation, // Assurez-vous de passer la variable ici
+            'reservation' => $reservation,
+            'errors' => $errors, // Passer les erreurs à la vue
         ]);
     }
 
@@ -89,5 +109,3 @@ class ReservationController extends AbstractController
         return $this->redirectToRoute('user_reservations');
     }
 }
-
-
