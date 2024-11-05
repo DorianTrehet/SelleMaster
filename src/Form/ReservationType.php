@@ -17,11 +17,11 @@ class ReservationType extends AbstractType
         $builder
             ->add('startDate', DateTimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date de début'
+                'label' => 'Start Date'
             ])
             ->add('endDate', DateTimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date de fin'
+                'label' => 'End Date'
             ]);
     }
 

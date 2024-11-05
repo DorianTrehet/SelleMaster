@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ReservationController extends AbstractController
 {
@@ -27,26 +28,23 @@ class ReservationController extends AbstractController
         $form = $this->createForm(ReservationType::class, $reservation);
 
         $form->handleRequest($request);
-        $errors = []; // Déclarez un tableau pour stocker les erreurs
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em->persist($reservation);
-                $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($reservation);
+            $em->flush();
 
-                return $this->redirectToRoute('user_reservations', ['id' => $equipment->getId()]);
-            } else {
-                // Récupération des erreurs de validation
-                foreach ($form->getErrors(true) as $error) {
-                    $errors[] = $error->getMessage();
-                }
-            }
+            $this->addFlash('success', 'Reservation created successfully!');
+            return $this->redirectToRoute('user_reservations');
+        }
+
+        // Handle form validation errors
+        foreach ($form->getErrors(true) as $error) {
+            $this->addFlash('error', $error->getMessage());
         }
 
         return $this->render('reservation/new.html.twig', [
             'form' => $form->createView(),
             'equipment' => $equipment,
-            'errors' => $errors, // Passer les erreurs à la vue
         ]);
     }
 
@@ -69,43 +67,42 @@ class ReservationController extends AbstractController
     #[Route('/reservation/edit/{id}', name: 'reservation_edit')]
     public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
-        // Créer le formulaire
         $form = $this->createForm(ReservationType::class, $reservation);
         
-        // Traitement de la requête
         $form->handleRequest($request);
-        $errors = []; // Déclarez un tableau pour stocker les erreurs
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $entityManager->flush(); // Enregistrer les modifications en base de données
-                
-                // Rediriger après la modification
-                return $this->redirectToRoute('user_reservations');
-            } else {
-                // Récupération des erreurs de validation
-                foreach ($form->getErrors(true) as $error) {
-                    $errors[] = $error->getMessage();
-                }
-            }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush(); // Save the changes
+            
+            $this->addFlash('success', 'Reservation updated successfully!');
+            return $this->redirectToRoute('user_reservations');
         }
 
-        // Passer la réservation au template
+        // Handle form validation errors
+        foreach ($form->getErrors(true) as $error) {
+            $this->addFlash('error', $error->getMessage());
+        }
+
         return $this->render('reservation/edit.html.twig', [
             'form' => $form->createView(),
             'reservation' => $reservation,
-            'errors' => $errors, // Passer les erreurs à la vue
         ]);
     }
 
     #[Route('/reservation/cancel/{id}', name: 'reservation_cancel')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function cancel(Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
-        // Assurez-vous que l'utilisateur peut uniquement annuler ses propres réservations.
+        // Ensure that the user can only cancel their own reservations.
+        if ($reservation->getUser() !== $this->getUser()) {
+            $this->addFlash('error', 'You cannot cancel this reservation.');
+            return $this->redirectToRoute('user_reservations');
+        }
+
         $entityManager->remove($reservation);
         $entityManager->flush();
 
-        // Redirigez vers la liste des réservations avec un message de succès
+        $this->addFlash('success', 'Reservation canceled successfully.');
         return $this->redirectToRoute('user_reservations');
     }
 }

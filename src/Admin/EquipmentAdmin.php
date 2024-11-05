@@ -100,17 +100,8 @@ final class EquipmentAdmin extends AbstractAdmin
         ->add('location.shelf', 'text', [
             'label' => 'Shelf',
         ])
-        // ->add('description', 'text', [ 
-        //     'label' => 'Description',
-        //     'sortable' => false,
-        // ])
         ->add('price')
         ->add('lastMovement');
-        // ->add('createdAt', 'date', [
-        //     'pattern' => 'dd MMM y G',
-        //     'locale' => 'fr',
-        //     'timezone' => 'Europe/Paris',
-        // ]);
     }
 
     protected function configureShowFields(ShowMapper $show): void
