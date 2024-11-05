@@ -31,8 +31,6 @@ class ReservationController extends AbstractController
             $em->persist($reservation);
             $em->flush();
 
-            $this->addFlash('success', 'Réservation effectuée avec succès !');
-
             return $this->redirectToRoute('user_reservations', ['id' => $equipment->getId()]);
         }
 

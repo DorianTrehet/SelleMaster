@@ -38,6 +38,11 @@ services:
             - { name: sonata.admin, manager_type: orm, group: "Inventory", label: "Condition" }
 
     # Grouping movements and maintenance activities under Operations
+    App\Admin\ReservationAdmin:
+        arguments: [~, App\Entity\Reservation, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Operations", label: "Reservation" }
+
     App\Admin\MovementAdmin:
         arguments: [~, App\Entity\Movement, ~]
         tags:
