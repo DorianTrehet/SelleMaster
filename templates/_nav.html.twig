@@ -10,7 +10,9 @@
         <div class="flex space-x-4">
             <a href="/home" class="text-gray-300 hover:text-white">Accueil</a>
             <a href="{{ path('app_equipment') }}" class="text-gray-300 hover:text-white">Inventaire</a>
-            
+            {% if app.user %}
+                <a href="{{ path('user_reservations') }}" class="text-gray-300 hover:text-white">Mes réservations</a>
+            {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
                 <!-- Lien vers l'interface administrateur si l'utilisateur a le rôle admin -->
                 <a href="/admin" class="text-gray-300 hover:text-white">Admin</a>

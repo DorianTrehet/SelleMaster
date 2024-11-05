@@ -1,26 +1,28 @@
 <?php
 
+// src/Form/ReservationType.php
+
 namespace App\Form;
 
-use App\Entity\Equipment;
 use App\Entity\Reservation;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReservationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('equipment', EntityType::class, [
-                'class' => Equipment::class,
-                'choice_label' => 'name',
+            ->add('startDate', DateTimeType::class, [
+                'widget' => 'single_text',
+                'label' => 'Date de début'
             ])
-            ->add('startDate', DateTimeType::class)
-            ->add('endDate', DateTimeType::class);
+            ->add('endDate', DateTimeType::class, [
+                'widget' => 'single_text',
+                'label' => 'Date de fin'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -30,3 +32,4 @@ class ReservationType extends AbstractType
         ]);
     }
 }
+

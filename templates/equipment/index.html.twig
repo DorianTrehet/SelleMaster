@@ -17,6 +17,7 @@
                     <th class="py-3 px-6 text-left">Emplacement</th>
                     <th class="py-3 px-6 text-left">État</th>
                     <th class="py-3 px-6 text-left">Disponibilité</th>
+                    <th class="py-3 px-6 text-left">Réserver</th>
                 </tr>
             </thead>
             <tbody class="text-gray-600 text-sm font-light">
@@ -32,6 +33,15 @@
                             <span class="text-green-600">Disponible</span>
                         {% else %}
                             <span class="text-red-600">Non disponible</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') and equipment.isAvailable %}
+                            <a href="{{ path('reservation_new', { id: equipment.id }) }}" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
+                                Réserver
+                            </a>
+                        {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <p><a href="{{ path('app_login') }}" class="text-blue-500 underline">Connectez-vous</a> pour réserver cet équipement.</p>
                         {% endif %}
                     </td>
                 </tr>

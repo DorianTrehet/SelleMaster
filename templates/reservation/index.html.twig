@@ -1,20 +1,40 @@
+{# templates/reservations/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ReservationController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="container mx-auto max-w-2xl mt-10 p-6 bg-white shadow-md rounded-lg">
+        <h1 class="text-2xl font-semibold mb-6 text-center">Mes Réservations</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/doria/Documents/MMI/Symfony/SelleMaster/src/Controller/ReservationController.php</code></li>
-        <li>Your template at <code>C:/Users/doria/Documents/MMI/Symfony/SelleMaster/templates/reservation/index.html.twig</code></li>
-    </ul>
-</div>
+        {% if reservations is empty %}
+            <p class="text-center">Aucune réservation trouvée.</p>
+        {% else %}
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Équipement</th>
+                        <th class="py-3 px-6 text-left">Date de début</th>
+                        <th class="py-3 px-6 text-left">Date de fin</th>
+                        <th class="py-3 px-6 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm font-light">
+                    {% for reservation in reservations %}
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 font-bold text-dark-600">{{ reservation.equipment.name }}</td>
+                            <td class="py-3 px-6">{{ reservation.startDate|date('Y-m-d H:i') }}</td>
+                            <td class="py-3 px-6">{{ reservation.endDate|date('Y-m-d H:i') }}</td>
+                            <td class="py-3 px-6">
+                                {% if reservation.endDate > "now"|date("Y-m-d H:i") %}
+                                    <a href="{{ path('reservation_edit', { id: reservation.id }) }}" class="btn btn-warning">Modifier</a>
+                                    <form action="{{ path('reservation_cancel', { id: reservation.id }) }}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?');">Annuler</button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
 {% endblock %}
