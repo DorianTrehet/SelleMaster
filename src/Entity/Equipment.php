@@ -303,28 +303,7 @@ class Equipment
         return $this;
     }
 
-    public function isAvailable(): bool
-    {
-        $today = new \DateTime();
     
-        // Vérifier les réparations
-        $hasActiveRepairs = $this->repairs->exists(function($key, $repair) use ($today) {
-            return $repair->getStartDate() <= $today && $repair->getEndDate() >= $today;
-        });
-    
-        // Vérifier les maintenances
-        $hasActiveMaintenance = $this->maintenances->exists(function($key, $maintenance) use ($today) {
-            return $maintenance->getMaintenanceDate() == $today;
-        });
-    
-        // Vérifier la condition de l'équipement
-        $isUnderRepair = $this->stat && $this->stat->getName() === 'Under Repair';
-        $isOutOfService = $this->stat && $this->stat->getName() === 'Out of Service';
-    
-        // L'équipement est disponible s'il n'y a pas de réparations, de maintenances actives, et s'il n'est pas en réparation ou hors service
-        return !$hasActiveRepairs && !$hasActiveMaintenance && !$isUnderRepair && !$isOutOfService;
-    }
-
     /**
      * @return Collection<int, Reservation>
      */
@@ -351,10 +330,35 @@ class Equipment
                 $reservation->setEquipment(null);
             }
         }
-
+        
         return $this;
     }
     
+    public function isAvailable(): bool
+    {
+        $today = new \DateTime();
+    
+        // Vérifier les réparations
+        $hasActiveRepairs = $this->repairs->exists(function($key, $repair) use ($today) {
+            return $repair->getStartDate() <= $today && $repair->getEndDate() >= $today;
+        });
+    
+        // Vérifier les maintenances
+        $hasActiveMaintenance = $this->maintenances->exists(function($key, $maintenance) use ($today) {
+            return $maintenance->getMaintenanceDate() == $today;
+        });
+    
+        // Vérifier la condition de l'équipement
+        $isUnderRepair = $this->stat && $this->stat->getName() === 'Under Repair';
+        $isOutOfService = $this->stat && $this->stat->getName() === 'Out of Service';
+    
+        // Vérifier les réservations (loan)
+        $hasActiveReservations = $this->reservations->exists(function($key, $reservation) use ($today) {
+            return $reservation->getStartDate() <= $today && $reservation->getEndDate() >= $today;
+        });
+    
+        return !$hasActiveRepairs && !$hasActiveMaintenance && !$isUnderRepair && !$isOutOfService && !$hasActiveReservations;
+    }
     
     
 }
