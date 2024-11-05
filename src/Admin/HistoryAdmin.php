@@ -3,6 +3,7 @@
 // src/Admin/HistoryAdmin.php
 namespace App\Admin;
 
+use App\Entity\User;
 use App\Entity\Movement;
 use App\Entity\Equipment;
 use Doctrine\ORM\EntityRepository;
@@ -37,6 +38,10 @@ final class HistoryAdmin extends AbstractAdmin
                         ->orderBy('mt.name', 'ASC');
                 },
             ])
+            ->add('user', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'email',
+            ])
             ->add('eventDate', DateTimeType::class, [
                 'widget' => 'single_text',
                 'required' => true,
@@ -57,6 +62,9 @@ final class HistoryAdmin extends AbstractAdmin
             ->add('movement.movementType.name', null, [
                 'label' => 'Movement',
             ])
+            ->add('user.email', null, [
+                'label' => 'User',
+            ])
             ->add('eventDate', null, [
                 'label' => 'Event Date',
             ]);
@@ -70,6 +78,9 @@ final class HistoryAdmin extends AbstractAdmin
         ])
         ->add('movement.movementType.name', 'text', [
             'label' => 'Movement Type',
+        ])
+        ->add('user.email', 'text', [
+            'label' => 'User',
         ])
         ->add('eventDate', 'datetime', [
             'label' => 'Event Date',
@@ -88,6 +99,9 @@ final class HistoryAdmin extends AbstractAdmin
             ])
             ->add('movement.movementType.name', null, [
                 'label' => 'Movement Type',
+            ])
+            ->add('user.email', null, [
+                'label' => 'User',
             ])
             ->add('eventDate', null, [
                 'label' => 'Event Date',

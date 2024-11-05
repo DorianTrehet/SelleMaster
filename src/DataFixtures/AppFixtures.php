@@ -107,28 +107,31 @@ class AppFixtures extends Fixture
             $manager->persist($equipment);
         }
 
-        for ($u=0; $u < 50; $u++) { 
+        // Création des utilisateurs
+        $users = []; // Tableau pour stocker les utilisateurs
+        for ($u = 0; $u < 50; $u++) { 
             $user = new User();
-        
+
             // Définir le mot de passe de l'admin
             if ($u === 3) {
                 $adminPassword = 'password';
                 $user->setRoles(["ROLE_ADMIN"])
-                     ->setEmail("admin@test.test");
+                    ->setEmail("admin@test.test");
             } else {
                 $user->setEmail($faker->freeEmail());
                 $adminPassword = 'password';
             }
-        
+
             // Hasher le mot de passe de l'utilisateur
             $hash = $this->hasher->hashPassword($user, $adminPassword);
             
             // Appliquer le mot de passe haché à l'utilisateur
             $user->setPassword($hash);
+            $users[] = $user; // Ajoute l'utilisateur au tableau
             $this->addReference('user_' . $u, $user);
-        
+            
             $manager->persist($user);
-        }        
+        }      
 
         // Mouvements
         for ($i = 0; $i < 50; $i++) { // Générer 50 mouvements
@@ -169,14 +172,26 @@ class AppFixtures extends Fixture
 
         // Historique
         for ($i = 0; $i < 50; $i++) { // Générer 50 enregistrements d'historique
+            $movementReference = $this->getReference('movement_' . $faker->numberBetween(0, 29)); // Récupérer une référence de mouvement
             $history = new History();
             $history->setEquipment($this->getReference('equipment_' . $faker->numberBetween(0, 19))) // Récupérer une référence d'équipement
-                    ->setMovement($this->getReference('movement_' . $faker->numberBetween(0, 29))) // Récupérer une référence de mouvement
+                    ->setMovement($movementReference) // Récupérer la référence de mouvement
+                    ->setUser($this->getReference('user_3')) // Assigner l'utilisateur Admin
                     ->setEventDate(new \DateTimeImmutable($faker->dateTimeThisYear()->format('Y-m-d H:i:s'))) // Date de l'événement
                     ->setComment($faker->sentence()); // Commentaire
 
+            // Vérifier si le mouvement est de type 'repair' ou 'maintenance'
+            if (in_array($movementReference->getMovementType()->getName(), ['repair', 'maintenance'])) {
+                // Forcer l'utilisateur Admin pour les mouvements de type repair ou maintenance
+                $history->setUser($this->getReference('user_3'));
+            } else {
+                // Assigner un utilisateur aléatoire pour les autres mouvements
+                $history->setUser($users[$faker->numberBetween(0, count($users) - 1)]);
+            }
+
             $manager->persist($history);
         }
+
 
         // Maintenances
         for ($i = 0; $i < 30; $i++) { // Générer 30 maintenances
