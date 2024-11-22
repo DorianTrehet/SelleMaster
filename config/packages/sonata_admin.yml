@@ -1,6 +1,9 @@
 # config/packages/sonata_admin.yaml
 
 sonata_admin:
+    templates:
+        dashboard: '@SonataAdmin/Core/dashboard.html.twig'
+
     security:
         handler: sonata.admin.security.handler.role
 

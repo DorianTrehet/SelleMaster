@@ -4,22 +4,22 @@
 
 namespace App\Controller;
 
-use App\Entity\Reservation;
-use App\Entity\Equipment;
-use App\Form\ReservationType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Equipment;
+use App\Entity\Reservation;
+use App\Form\ReservationType;
+use App\Repository\ReservationRepository;
 
 class ReservationController extends AbstractController
 {
     #[Route('/reservation/{id}/new', name: 'reservation_new')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function new(Equipment $equipment, Request $request, EntityManagerInterface $em): Response
+    public function new(Equipment $equipment, Request $request, EntityManagerInterface $em, ReservationRepository $reservationRepository): Response
     {
         $reservation = new Reservation();
         $reservation->setEquipment($equipment);
@@ -30,6 +30,18 @@ class ReservationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Check for overlapping reservations
+            $existingReservations = $reservationRepository->findBy(['equipment' => $equipment]);
+            foreach ($existingReservations as $existingReservation) {
+                if (
+                    ($reservation->getStartDate() >= $existingReservation->getStartDate() && $reservation->getStartDate() <= $existingReservation->getEndDate()) ||
+                    ($reservation->getEndDate() >= $existingReservation->getStartDate() && $reservation->getEndDate() <= $existingReservation->getEndDate())
+                ) {
+                    $this->addFlash('error', 'These dates are already reserved.');
+                    return $this->redirectToRoute('reservation_new', ['id' => $equipment->getId()]);
+                }
+            }
+
             $em->persist($reservation);
             $em->flush();
 

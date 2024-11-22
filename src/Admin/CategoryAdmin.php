@@ -15,7 +15,7 @@ final class CategoryAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form->add('name', TextType::class, [
-                'required' => true,
+            'required' => true,
         ]);
     }
 

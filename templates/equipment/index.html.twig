@@ -23,7 +23,7 @@
             <tbody class="text-gray-600 text-sm font-light">
             {% for equipment in equipments %}
                 <tr class="border-b border-gray-200 hover:bg-gray-100">
-                    <td class="py-3 px-6 font-bold text-dark-600">{{ equipment.name }}</td>
+                    <td class="py-3 px-6 font-bold text-blue-600"><a href="{{ path('app_details_equipment', { id: equipment.id }) }}">{{ equipment.name }}</a></td>
                     <td class="py-3 px-6">{{ equipment.category.name }}</td>
                     <td class="py-3 px-6">{{ equipment.price|number_format(2, '.', ',') }} €</td>
                     <td class="py-3 px-6">{{ equipment.location.aisle ~ ' - ' ~ equipment.location.shelf }}</td>
