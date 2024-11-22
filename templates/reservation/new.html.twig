@@ -1,6 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+{% for label, messages in app.flashes %}
+    <div class="mb-4">
+        {% for message in messages %}
+            <div class="bg-{{ label == 'error' ? 'red' : 'green' }}-100 border border-{{ label == 'error' ? 'red' : 'green' }}-400 text-{{ label == 'error' ? 'red' : 'green' }}-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">{{ label|capitalize }}!</strong>
+                <span class="block sm:inline">{{ message }}</span>
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
     <div class="container mx-auto max-w-lg mt-10 p-6 bg-white shadow-md rounded-lg">
         <h1 class="text-2xl font-semibold mb-6 text-center">Reserve {{ equipment.name }}</h1>
 

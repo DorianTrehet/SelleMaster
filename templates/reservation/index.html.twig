@@ -24,8 +24,8 @@
                     {% for reservation in reservations %}
                         <tr class="border-b border-gray-200 hover:bg-gray-100">
                             <td class="py-3 px-6 font-bold text-dark-600">{{ reservation.equipment.name }}</td>
-                            <td class="py-3 px-6">{{ reservation.startDate|date('j F Y  H:i') }}</td>
-                            <td class="py-3 px-6">{{ reservation.endDate|date('j F Y  H:i') }}</td>
+                            <td class="py-3 px-6">{{ reservation.startDate|date('j F Y') }}</td>
+                            <td class="py-3 px-6">{{ reservation.endDate|date('j F Y') }}</td>
                             <td class="py-3 px-6">
                             {% if reservation.endDate > "now"|date("Y-m-d H:i") %}
                                 <div class="d-flex align-items-center mb-2">

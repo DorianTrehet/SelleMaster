@@ -1,12 +1,10 @@
 <?php
-
 // src/Form/ReservationType.php
-
 namespace App\Form;
 
 use App\Entity\Reservation;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,14 +13,19 @@ class ReservationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('startDate', DateTimeType::class, [
+            ->add('startDate', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Start Date'
+                'html5' => true, 
+                'attr' => ['class' => 'w-full p-2 border border-gray-300 rounded'],
+                'format' => 'yyyy-MM-dd',
             ])
-            ->add('endDate', DateTimeType::class, [
+            ->add('endDate', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'End Date'
-            ]);
+                'html5' => true,
+                'attr' => ['class' => 'w-full p-2 border border-gray-300 rounded'],
+                'format' => 'yyyy-MM-dd',
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -32,4 +35,3 @@ class ReservationType extends AbstractType
         ]);
     }
 }
-
