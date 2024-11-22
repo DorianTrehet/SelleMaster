@@ -30,6 +30,12 @@ class ReservationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Check if startDate is before endDate
+            if ($reservation->getStartDate() > $reservation->getEndDate()) {
+                $this->addFlash('error', 'The start date must be before the end date.');
+                return $this->redirectToRoute('reservation_new', ['id' => $equipment->getId()]);
+            }
+    
             // Check for overlapping reservations
             $existingReservations = $reservationRepository->findBy(['equipment' => $equipment]);
             foreach ($existingReservations as $existingReservation) {
@@ -41,10 +47,10 @@ class ReservationController extends AbstractController
                     return $this->redirectToRoute('reservation_new', ['id' => $equipment->getId()]);
                 }
             }
-        
+    
             $em->persist($reservation);
             $em->flush();
-        
+    
             $this->addFlash('success', 'Reservation created successfully!');
             return $this->redirectToRoute('user_reservations');
         }
@@ -54,9 +60,12 @@ class ReservationController extends AbstractController
             $this->addFlash('error', $error->getMessage());
         }
 
+        $existingReservations = $reservationRepository->findBy(['equipment' => $equipment]);
+
         return $this->render('reservation/new.html.twig', [
             'form' => $form->createView(),
             'equipment' => $equipment,
+            'existingReservations' => $existingReservations,
         ]);
     }
 
