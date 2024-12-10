@@ -15,6 +15,10 @@
         </ul>
 
         <h2 class="text-xl font-semibold mb-2">Reservations</h2>
+        <a href="{{ path('reservation_new', { id: equipment.id }) }}" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
+            Reserve
+        </a>
+        <br><br>
         <ul class="list-disc pl-5">
             {% for reservation in reservations %}
                 <li>
