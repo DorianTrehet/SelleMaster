@@ -14,7 +14,9 @@
         {% endblock %}
     </head>
     <body>
-        {{ include('_nav.html.twig')}}
-        {% block body %}{% endblock %}
+        {{ include('_nav.html.twig') }}
+        <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+            {% block body %}{% endblock %}
+        </div>
     </body>
 </html>
