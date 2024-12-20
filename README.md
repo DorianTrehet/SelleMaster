@@ -21,6 +21,7 @@ Clonez ce repository sur votre machine locale :
 ```bash
 git clone https://github.com/votre-utilisateur/votre-repository.git
 cd votre-repository
+```
 
 ### 2. Installer les dépendances
 
@@ -28,3 +29,4 @@ Exécutez la commande suivante pour installer toutes les dépendances du projet 
 
 ```bash
 composer install
+```
