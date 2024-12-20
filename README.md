@@ -19,8 +19,8 @@ Avant d'installer l'application, assurez-vous que vous avez les outils suivants 
 Clonez ce repository sur votre machine locale :
 
 ```bash
-git clone https://github.com/votre-utilisateur/votre-repository.git
-cd votre-repository
+git clone https://github.com/DorianTrehet/SelleMaster.git
+cd SelleMaster
 ```
 
 ### 2. Installer les dépendances
