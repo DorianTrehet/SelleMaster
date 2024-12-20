@@ -83,6 +83,12 @@ Si vous rencontrez cette erreur **An exception has been thrown during the render
 ```bash
 symfony console tailwind:build
 ```
+## Se connecter en tant qu'Admin
+
+Si vous voulez vous connecter en tant qu'administrateur : 
+
+email : ``` admin@test.test ```
+mdp : ``` password ```
 
 ## Commandes Make disponibles
 Voici les commandes make disponibles pour gérer votre application :
