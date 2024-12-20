@@ -76,6 +76,14 @@ make start
 
 L'application sera alors accessible à l'adresse http://localhost:8000.
 
+## Erreurs Tailwind
+
+Si vous rencontrez cette erreur **An exception has been thrown during the rendering of a template ("Built Tailwind CSS file does not exist: run "php bin/console tailwind:build" to generate it").**, exécutez la commande suivante et relancez le serveur :
+
+```bash
+symfony console tailwind:build
+```
+
 ## Commandes Make disponibles
 Voici les commandes make disponibles pour gérer votre application :
 
