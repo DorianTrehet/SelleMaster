@@ -55,3 +55,31 @@ Une fois la configuration de la base de données terminée, créez la base de do
 make db-init
 ```
 Cela exécutera les commandes Symfony nécessaires pour créer la base de données et générer les tables à partir des entités de l'application.
+
+### 5. Charger les fixtures
+
+Pour charger les données de test dans la base de données (fixtures), exécutez la commande suivante :
+
+```bash
+make fixtures
+```
+
+Cela remplira la base de données avec des données de test pour vous permettre de commencer à utiliser l'application immédiatement.
+
+### 6. Démarrer le serveur Symfony
+
+Une fois les étapes précédentes terminées, vous pouvez démarrer le serveur de développement Symfony avec la commande suivante :
+
+```bash
+make start
+```
+
+L'application sera alors accessible à l'adresse http://localhost:8000.
+
+## Commandes Make disponibles
+Voici les commandes make disponibles pour gérer votre application :
+
+*make db-init : Crée la base de données et met à jour le schéma.
+*make db-reset : Réinitialise la base de données (supprime et recrée).
+*make fixtures : Charge les données de test (fixtures) dans la base de données.
+*make start : Lance le serveur Symfony.
