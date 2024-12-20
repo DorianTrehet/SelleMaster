@@ -79,7 +79,7 @@ L'application sera alors accessible à l'adresse http://localhost:8000.
 ## Commandes Make disponibles
 Voici les commandes make disponibles pour gérer votre application :
 
-* make db-init : Crée la base de données et met à jour le schéma.
-* make db-reset : Réinitialise la base de données (supprime et recrée).
-* make fixtures : Charge les données de test (fixtures) dans la base de données.
-* make start : Lance le serveur Symfony.
+* ```bash make db-init ``` : Crée la base de données et met à jour le schéma.
+* ```bash make db-reset ``` : Réinitialise la base de données (supprime et recrée).
+* ```bash make fixtures ``` : Charge les données de test (fixtures) dans la base de données.
+* ```bash make start ``` : Lance le serveur Symfony.
