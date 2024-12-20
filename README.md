@@ -91,3 +91,4 @@ Voici les commandes make disponibles pour gérer votre application :
 * ``` make db-reset ``` : Réinitialise la base de données (supprime et recrée).
 * ``` make fixtures ``` : Charge les données de test (fixtures) dans la base de données.
 * ``` make start ``` : Lance le serveur Symfony.
+* ``` make stop ``` : Arrête le serveur Symfony.
