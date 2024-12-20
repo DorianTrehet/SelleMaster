@@ -30,3 +30,28 @@ Exécutez la commande suivante pour installer toutes les dépendances du projet 
 ```bash
 composer install
 ```
+
+### 3. Configurer la base de données 
+
+Créez le fichier .env.local à la racine du projet et mettez l'URL de la base de données en fonction de votre configuration locale.
+
+**Si vous utilisez MySQL**, modifiez l'URL comme suit :
+
+```bash
+DATABASE_URL="mysql://root:@127.0.0.1:3306/SelleMaster?serverVersion=8.0.32&charset=utf8mb4"
+```
+
+**Si vous préférez SQLite**, (aucune configuration de serveur nécessaire), utilisez cette URL :
+
+```bash
+DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
+```
+
+### 4. Créer la base de données et le schéma
+
+Une fois la configuration de la base de données terminée, créez la base de données et mettez à jour le schéma avec la commande suivante :
+
+```bash
+make db-init
+```
+Cela exécutera les commandes Symfony nécessaires pour créer la base de données et générer les tables à partir des entités de l'application.
