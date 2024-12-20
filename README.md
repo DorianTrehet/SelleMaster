@@ -33,7 +33,7 @@ composer install
 
 ### 3. Configurer la base de données 
 
-Créez le fichier .env.local à la racine du projet et mettez l'URL de la base de données en fonction de votre configuration locale.
+Créez le fichier **.env.local** à la racine du projet et mettez l'URL de la base de données en fonction de votre configuration locale.
 
 **Si vous utilisez MySQL**, modifiez l'URL comme suit :
 
