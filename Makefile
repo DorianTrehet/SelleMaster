@@ -1,10 +1,15 @@
 # Makefile
 
-.PHONY: start db-init db-reset fixtures
+.PHONY: start stop db-init db-reset fixtures
 
 # Lancer le serveur Symfony
 start:
 	@symfony serve
+
+# Arrêter le serveur Symfony
+stop:
+	@echo "Arrêt du serveur Symfony..."
+	@kill -9 $(shell lsof -t -i:8000) || true
 
 # Initialiser la base de données (création et mise à jour du schéma)
 db-init:
@@ -20,3 +25,4 @@ db-reset:
 # Importer les fixtures
 fixtures:
 	@symfony console doctrine:fixtures:load --no-interaction
+
