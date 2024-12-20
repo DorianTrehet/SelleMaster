@@ -6,11 +6,6 @@
 start:
 	@symfony serve
 
-# Arrêter le serveur Symfony
-stop:
-	@echo "Arrêt du serveur Symfony..."
-	@kill -9 $(shell lsof -t -i:8000) || true
-
 # Initialiser la base de données (création et mise à jour du schéma)
 db-init:
 	@symfony console doctrine:database:create --if-not-exists
